@@ -36,7 +36,7 @@
 #define COMMS_FAULT_IN_PIN  (BIT1) // COMMS fault status HIGH: Normal / LOW: Fault
 #define BEACON_FAULT_IN_PIN (BIT2) // Beacon fault status HIGH: Normal / LOW: Fault
 #define LED_FAULT_IN_PIN 	(BIT3) // LED controller fault status HIGH: Normal / LOW: Fault
-#define IO_OE_PIN 			(BIT4) // 74LVC8T245 Buffer input enable
+#define IO_OE_PIN 			(BIT4) // 74LVC8T245 Buffer input enable Active Low
 #define ROSC_PIN 			(BIT5) // ROSC for DCO calibration
 #define RTC_INT_PIN 		(BIT6) // DS3231 RTC interrupt pin
 #define TEMP_ALERT_PIN		(BIT7) // TMP101 alert pin

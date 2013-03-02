@@ -7,7 +7,8 @@ int read = 0;
 uint8_t sending = 0;
 
 void uart_start() {
-      P3SEL |= 0xC0;                            // P3.6,7 = USART1 TXD/RXD
+//      P3SEL |= 0xC0;                            // P3.6,7 = USART1 TXD/RXD
+      P3SEL |= (UART_TXD_PIN + UART_RXD_PIN);
 	  UCTL1 |= SWRST;                          // Initialize USART state machine
 	  UCTL1 |= CHAR + SWRST;
 	  UTCTL1 |= SSEL0;
