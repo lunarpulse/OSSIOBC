@@ -15,14 +15,19 @@ int main(void)
     // LED Test
 	P1OUT &= ~(LED_PIN+EXT_WDT_PIN);
 	P1DIR |= (LED_PIN +EXT_WDT_PIN);
-	uart1_init();
-	uart1_start();
-
-	printf("hello");
 
 	// External Interface 485 TX DE
 	P5OUT &= ~RS485_DE_PIN;
 	P5DIR |= RS485_DE_PIN;
+
+
+	uart1_init();
+	uart1_start();
+
+
+
+
+
 
 	P4OUT &= ~(COMMS_OFF_PIN + BEACON_OFF_PIN + LED_OFF_PIN + SCOUT_EN_OUT_PIN + SCCHG_EN_OUT_PIN +ANT_DEPLOY2_PIN +ANT_DEPLOY1_PIN+VEXT_OFF_PIN );
 	P4DIR |= (COMMS_OFF_PIN + BEACON_OFF_PIN + LED_OFF_PIN + SCOUT_EN_OUT_PIN + SCCHG_EN_OUT_PIN +ANT_DEPLOY2_PIN +ANT_DEPLOY1_PIN+VEXT_OFF_PIN);
@@ -33,10 +38,21 @@ int main(void)
 
 	P2OUT |= IO_OE_PIN;
 	P2DIR |= IO_OE_PIN;
+
+
+
+
 	char readChar;
 
 
 	P1OUT |= (LED_PIN);
+
+
+	P5OUT |= RS485_DE_PIN;
+	__delay_cycles(500000);
+	printf("hello");
+	__delay_cycles(500000);
+	P5OUT &= ~RS485_DE_PIN;
 
     while(1)
     {

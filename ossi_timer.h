@@ -8,7 +8,7 @@
 #ifndef TIMERB_H_
 #define TIMERB_H_
 
-#include "ossi_obc.h"
+#include "ossi_1611.h"
 
 #define TIMER_B_TBCLK 		TBSSEL_0
 #define TIMER_B_ACLK 		TBSSEL_1
