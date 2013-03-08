@@ -8,16 +8,14 @@
 #ifndef OSSIOBC_H_
 #define OSSIOBC_H_
 
-#include "msp430f1611.h"
-#include "ossi_types.h"
+#include "ossi_1611.h"
 #include "clock.h"
-#include "debug.h"
 #include "ossi_log.h"
 #include "ossi_timer.h"
 #include "ossi_data.h"
 #include "i2c.h"
 #include "adc12.h"
-#include "system.h"
+#include "printf.h"
 #include "ossi_rtc.h"
 
 
@@ -48,8 +46,8 @@
 #define I2C_SCL_PIN			(BIT3) // I2C SCL pin
 #define UNUSED3_4			(BIT4) // unused
 #define UNUSED3_5			(BIT5) // unused
-#define UART_TXD_PIN		(BIT6) // UART TXD1
-#define UART_RXD_PIN		(BIT7) // UART RXD1
+#define UART_TXD_PIN		(UART_TXD1_PIN) // UART TXD1
+#define UART_RXD_PIN		(UART_RXD1_PIN) // UART RXD1
 
 // PORT 4
 #define VEXT_OFF_PIN		(BIT0) // VEXT Power in OFF
@@ -72,8 +70,8 @@
 #define MUX_A2_PIN			(BIT7) //
 
 // PORT 6
-#define ADC0_PIN			(BIT0) // connected to analog Mux
-#define ADC1_PIN			(BIT1) // connected to analog Mux
+#define ADC0_PIN			(ADC12_PIN_6_0) // connected to analog Mux
+#define ADC1_PIN			(ADC12_PIN_6_1) // connected to analog Mux
 #define UNUSED6_2			(BIT2) // unused
 #define UNUSED6_3			(BIT3) // unused
 #define UNUSED6_4			(BIT4) // unused

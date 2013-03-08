@@ -8,7 +8,7 @@
 #ifndef I2C_H_
 #define I2C_H_
 
-#include "ossi_obc.h"
+#include "ossi_1611.h"
 #include "timerA.h"
 
 // TODO: Temporary Test

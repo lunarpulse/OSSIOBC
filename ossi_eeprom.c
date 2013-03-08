@@ -2,7 +2,7 @@
 
 #define SUCCESS 1
 #define ERROR 0
-static eepromI2CAddr = EEPROM_ADDR; // default EEPROM!
+static uint8_t eepromI2CAddr = EEPROM_ADDR; // default EEPROM!
 
 void eeprom_setAddress(uint8_t i2cAddress)
 {
@@ -174,15 +174,18 @@ uint8_t obc_eepromTest()
 
     //result = obc_eepromRawTest();
 	//return result;
-    result = obc_framTest();
-    return result;
+
+//    result = obc_framTest();
+//    return result;
 
 	#define EEPROM_TEST_SIZE 64
+
     uint8_t readData[EEPROM_TEST_SIZE]; // (2+64)*2
     uint8_t testData[EEPROM_TEST_SIZE]; // (2+64)*2
     volatile int i;
 
-    for(i = 0; i < sizeof(testData); i++) {
+    for(i = 0; i < sizeof(testData); i++)
+    {
         testData[i] = i;
     }
     result = eeprom_pageWrite(0, EEPROM_TEST_SIZE, testData);

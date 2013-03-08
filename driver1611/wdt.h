@@ -8,9 +8,7 @@
 #ifndef WDT_H_
 #define WDT_H_
 
-#include "msp430f1611.h"
-#include "ossi_types.h"
-#include "debug.h"
+#include "ossi_1611.h"
 
 #define WDT_CLOCKSOURCE_SMCLK  (0)
 #define WDT_CLOCKSOURCE_ACLK   (WDTSSEL)

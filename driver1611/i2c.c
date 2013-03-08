@@ -948,7 +948,7 @@ __interrupt void I2C_ISR(void)
 		   }
 		   __bic_SR_register_on_exit(LPM3_bits);
 	   }
-	   P6OUT ^= BIT4; 							// TODO:Test
+//	   P6OUT ^= BIT4; 							// TODO:Test
 	   break;
    case 10:                                 	// Receive Ready
 	   if(U0CTL & MST)

@@ -225,6 +225,8 @@ uint8_t rtc_readAlarm1(rtcAlarm_t * alarm) {
 
 uint8_t obc_rtcInit(void)
 {
+	uint8_t result;
+
 	// Interrupt pin setting.
 	// RTC RST: P2.5
 	P2IES |= BIT5; // high low edge detect.
@@ -237,7 +239,11 @@ uint8_t obc_rtcInit(void)
 	P2IFG &= ~BIT6;
 
 	// init alarm1.
-    rtc_clearAlarm1();
+    result = rtc_clearAlarm1();
+    if (result == ERROR)
+    		return ERROR;
+
+    return SUCCESS;
 }
 
 uint8_t obc_rtcAlarm1Save(ledTimeData_t* ledTime)
@@ -252,6 +258,8 @@ uint8_t obc_rtcAlarm1Save(ledTimeData_t* ledTime)
     ledTime->u8.date = alarm.date;
     ledTime->u8.hour = alarm.hour;
     ledTime->u8.min = alarm.minute;
+
+    return SUCCESS;
 }
 
 
@@ -283,7 +291,7 @@ uint8_t obc_rtcTest(void)
 	if (result == ERROR)
 		return ERROR;
 
-	log_time(RTC_SERVICE, NOTICE_LEVEL, &set_time);
+//	log_time(RTC_SERVICE, NOTICE_LEVEL, &set_time);
 
     //// ALARM1
 	// making alarm data for setAlarm1

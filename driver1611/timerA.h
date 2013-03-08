@@ -8,7 +8,7 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#include "ossi_obc.h"
+#include "ossi_1611.h"
 
 extern volatile uint8_t i2cTimeOut;
 

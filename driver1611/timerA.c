@@ -58,6 +58,6 @@ __interrupt void Timer_A(void)
 	// disable timer interrupt
 	CCTL0 &= ~CCIE;
 	i2cTimeOut = 1;
-	 P6OUT ^= BIT0;
-	 log_saveWithNum(I2CIFG);
+//	 P6OUT ^= BIT0;
+//	 log_saveWithNum(I2CIFG);
 }

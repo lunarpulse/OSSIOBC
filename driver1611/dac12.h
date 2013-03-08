@@ -8,7 +8,7 @@
 #ifndef DAC12_H_
 #define DAC12_H_
 
-#include "ossi_obc.h"
+#include "ossi_1611.h"
 
 // ports setup is not needed for dac12
 // amplifierSelect > 0 -> DAC port ON

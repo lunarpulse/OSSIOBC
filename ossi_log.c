@@ -113,16 +113,16 @@ static void puts_systemTag(system_t s)
 {
   char* systemTag;
   systemTag = getSystemTag(s);
-  uart_puts(systemTag);
-  uart_puts(", ");
+  printf(systemTag);
+  printf(", ");
 }
 
 static void puts_levelTag(logLevel_t level)
 {
   char* levelTag;
   levelTag = getLevelTag(level);
-  uart_puts(levelTag);
-  uart_puts(", ");
+  printf(levelTag);
+  printf(", ");
 }
 
 static void puts_paddingZeroLessThen10(uint8_t n)
@@ -130,8 +130,8 @@ static void puts_paddingZeroLessThen10(uint8_t n)
 	char buf[12];
 	itoa(n, buf, 10);
 	if (n < 10)
-		uart_puts("0");
-	uart_puts(buf);
+		printf("0");
+	printf(buf);
 
 }
 static void puts_timeTag(uint32_t tick)
@@ -145,13 +145,13 @@ static void puts_timeTag(uint32_t tick)
   sec = tick % 60;
 
   puts_paddingZeroLessThen10(hour);
-  uart_puts(":");
+  printf(":");
 
   puts_paddingZeroLessThen10(minute);
-  uart_puts(":");
+  printf(":");
 
   puts_paddingZeroLessThen10(sec);
-  uart_puts(", ");
+  printf(", ");
 }
 
 static void _log(system_t s, logLevel_t level, char* msg)
@@ -168,7 +168,7 @@ static void _log(system_t s, logLevel_t level, char* msg)
   puts_systemTag(s);
   puts_levelTag(level);
 
-  uart_puts(msg);
+  printf(msg);
   return;
 }
 
@@ -176,7 +176,8 @@ void log_init()
 {
   char* initLog = "Time, Subsystem, Level, Message\r\n";
 
-  uart_start();
+  uart1_init();
+  uart1_start();
 
   logBufferReset();
   numBufferReset();
@@ -196,7 +197,7 @@ void log(system_t s, logLevel_t level, char* msg)
 	 return;
 
   _log(s, level, msg);
-  uart_puts("\n\r");    
+  printf("\n\r");
   return;
 }
 
@@ -209,10 +210,10 @@ void log_withNum(system_t s, logLevel_t level, char* msg, uint16_t n)
 
   _log(s,level,msg);
 
-  uart_puts(" ");
+  printf(" ");
   itoa(n, buf, 10);
-  uart_puts(buf);
-  uart_puts("\n\r");  
+  printf(buf);
+  printf("\n\r");
   return;
 }
 
@@ -292,13 +293,13 @@ void log_printAllWithNum()
   if (numBufIsOverflow)
       log(LOG_SERVICE, WARNING_LEVEL, "number buffer overflow");
 
-//  uart_puts("LOG: ");
+//  printf("LOG: ");
   for (i = 0 ; i < numBufIndex; i++) {
-    uart_puts("->");
+    printf("->");
     itoa(numBuffer[i], buf, 10);
-    uart_puts(buf);
+    printf(buf);
   }
-  uart_puts("\n\r");
+  printf("\n\r");
 
   numBufferReset();
   return;
@@ -317,22 +318,22 @@ void log_time(system_t s, logLevel_t level, rtcTime_t* time)
   puts_systemTag(s);
   puts_levelTag(level);
 
-  uart_puts("20");
+  printf("20");
   puts_paddingZeroLessThen10(time->year);
-  uart_puts("-");
+  printf("-");
 
   puts_paddingZeroLessThen10(time->month);
-  uart_puts("-");
+  printf("-");
 
   puts_paddingZeroLessThen10(time->date);
-  uart_puts(" ");
+  printf(" ");
 
   puts_paddingZeroLessThen10(time->hour);
-  uart_puts(":");
+  printf(":");
 
   puts_paddingZeroLessThen10(time->minute);
-  uart_puts(":");
+  printf(":");
 
   puts_paddingZeroLessThen10(time->second);
-  uart_puts("\n\r");
+  printf("\n\r");
 }

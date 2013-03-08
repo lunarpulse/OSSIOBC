@@ -2,11 +2,8 @@
 #define LOG_H_
 
 #include "ossi_obc.h"
-#include "ossi_rtc.h"
-#include "uart.h"
 
-/* #include "ossitypes.h" */
-/* #include "aclkuart.h" */
+#define MAX_BUFFER_SIZE 254 // TODO: why 254?
 
 typedef enum {
     LOG_OFF = 0,
@@ -34,7 +31,7 @@ typedef enum {
     LOG_I2C_STOP = 2,
     LOG_ADC_START = 3,
     LOG_ADC_STOP = 4,
-    LOG_BUF_OVER = 5,
+    LOG_BUF_OVER = 5
 } logMsg_t;
 
 typedef struct {
@@ -44,7 +41,6 @@ typedef struct {
   logLevel_t level;
 } log_message_t;
 
-#define MAX_BUFFER_SIZE 254
 
 void log_init(void);
 // set logging level;

@@ -8,7 +8,7 @@
 #ifndef FLASH_H_
 #define FLASH_H_
 
-#include "ossi_obc.h"
+#include "ossi_1611.h"
 
 // This flash module use Segment A as main
 // and Segment B for buffering

@@ -9,8 +9,6 @@
 #define OSSI_RTC_H_
 
 #include "ossi_obc.h"
-#include "ossi_data.h"
-#include "i2c.h"
 
 typedef struct {
     uint8_t second;

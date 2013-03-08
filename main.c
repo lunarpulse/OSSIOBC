@@ -15,8 +15,10 @@ int main(void)
     // LED Test
 	P1OUT &= ~(LED_PIN+EXT_WDT_PIN);
 	P1DIR |= (LED_PIN +EXT_WDT_PIN);
+	uart1_init();
+	uart1_start();
 
-	uart_start();
+	printf("hello");
 
 	// External Interface 485 TX DE
 	P5OUT &= ~RS485_DE_PIN;
@@ -39,13 +41,13 @@ int main(void)
     while(1)
     {
 
-//    	P1OUT ^= (LED_PIN+EXT_WDT_PIN);
-//
-//    	__delay_cycles(1000000);
+    	P1OUT ^= (LED_PIN+EXT_WDT_PIN);
 
-    	if(uart_available())
+    	__delay_cycles(100000);
+
+    	if(uart1_available())
     	{
-    		readChar = uart_getc();
+    		readChar = uart1_getc();
 
     		if (readChar =='a')
     		{
@@ -67,7 +69,7 @@ int main(void)
 				{
 					P5OUT |= RS485_DE_PIN;
 					__delay_cycles(500000);
-					uart_puts("SCPPOn\r\n");
+					printf("SCPPOn\r\n");
 					__delay_cycles(500000);
 					P5OUT &= ~RS485_DE_PIN;
 				}
@@ -75,7 +77,7 @@ int main(void)
 				{
 					P5OUT |= RS485_DE_PIN;
 					__delay_cycles(500000);
-					uart_puts("SCPPOff\r\n");
+					printf("SCPPOff\r\n");
 					__delay_cycles(500000);
 					P5OUT &= ~RS485_DE_PIN;
 				}
@@ -101,7 +103,7 @@ int main(void)
 				{
 					P5OUT |= RS485_DE_PIN;
 					__delay_cycles(500000);
-					uart_puts("Conduct\r\n");
+					printf("Conduct\r\n");
 					__delay_cycles(500000);
 					P5OUT &= ~RS485_DE_PIN;
 				}
@@ -109,7 +111,7 @@ int main(void)
 				{
 					P5OUT |= RS485_DE_PIN;
 					__delay_cycles(500000);
-					uart_puts("NotConduct\r\n");
+					printf("NotConduct\r\n");
 					__delay_cycles(500000);
 					P5OUT &= ~RS485_DE_PIN;
 				}
@@ -124,13 +126,10 @@ int main(void)
 
     		if (readChar == 'c')
     		{
-    			P4OUT ^= ANT_DEPLOY1_PIN;
+    			P4OUT ^= LED_OFF_PIN;
     		}
 
-    		if (readChar == 'v')
-    		{
-    			P4OUT ^= ANT_DEPLOY2_PIN;
-    		}
+
     	}
 
 
@@ -143,7 +142,7 @@ int main(void)
 //    		{
 //    			P1OUT ^= LED_PIN;
 //    			P5OUT |= RS485_DE_PIN;
-//    			uart_puts("LEDToggle\r\n");
+//    			printf("LEDToggle\r\n");
 //    			__delay_cycles(100000);
 //    			__delay_cycles(100000);
 //    			__delay_cycles(100000);
@@ -154,7 +153,7 @@ int main(void)
 //    		{
 //    			P4OUT ^= (COMMS_OFF_PIN + BEACON_OFF_PIN + LED_OFF_PIN + SCOUT_EN_OUT_PIN + SCCHG_EN_OUT_PIN+ANT_DEPLOY2_PIN +ANT_DEPLOY1_PIN);
 //    			P5OUT |= RS485_DE_PIN;
-//				uart_puts("OFFpinToggleSupercapToggle\r\n");
+//				printf("OFFpinToggleSupercapToggle\r\n");
 //				__delay_cycles(100000);
 //				__delay_cycles(100000);
 //				__delay_cycles(100000);

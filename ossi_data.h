@@ -5,7 +5,8 @@
  *      Author: OSSI
  */
 
-#include "ossi_types.h"
+#include "ossi_1611.h"
+
 
 #ifndef OSSI_DATA_H_
 #define OSSI_DATA_H_

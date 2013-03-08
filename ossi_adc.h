@@ -2,7 +2,6 @@
 #define OSSI_ADC_H_
 
 #include "ossi_obc.h"
-#include "adc12.h"
 
 #define MUX_VSOLAR 4
 #define MUX_VBUS 3

@@ -9,7 +9,7 @@
 #ifndef ADC12_H_
 #define ADC12_H_
 
-#include "ossi_obc.h"
+#include "ossi_1611.h"
 
 #define ADC12_PIN_6_0		        (BIT0)
 #define ADC12_PIN_6_1              	(BIT1)

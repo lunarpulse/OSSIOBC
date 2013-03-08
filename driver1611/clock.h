@@ -27,9 +27,8 @@
 #ifndef CLOCK_H_
 #define CLOCK_H_
 
-#include "msp430f1611.h"
-#include "ossi_types.h"
-#include "debug.h"
+#include "ossi_1611.h"
+
 
 #define CLOCK_XT2_LFXT1			 	(0)
 #define CLOCK_DCO_LFXT1			 	(1)
