@@ -24,9 +24,16 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>driver1611</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/driver1611</locationURI>
+		</link>
+	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>0</id>
+			<id>1362817053929</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
