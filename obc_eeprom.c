@@ -1,4 +1,4 @@
-#include "ossi_eeprom.h"
+#include "obc_eeprom.h"
 
 #define SUCCESS 1
 #define ERROR 0

@@ -26,9 +26,19 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>driver1611</name>
+			<name>f1611</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/driver1611</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/OSSI-1/driver/f1611</locationURI>
+		</link>
+		<link>
+			<name>include</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/OSSI-1/include</locationURI>
+		</link>
+		<link>
+			<name>lib</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/OSSI-1/lib</locationURI>
 		</link>
 	</linkedResources>
 	<filteredResources>

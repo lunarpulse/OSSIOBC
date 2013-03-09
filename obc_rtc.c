@@ -1,4 +1,4 @@
-#include "ossi_rtc.h"
+#include "obc_rtc.h"
 
 /// RTC
 uint8_t status_reg;

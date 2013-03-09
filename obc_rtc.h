@@ -5,8 +5,8 @@
  *      Author: donghee
  */
 
-#ifndef OSSI_RTC_H_
-#define OSSI_RTC_H_
+#ifndef OBC_RTC_H_
+#define OBC_RTC_H_
 
 #include "ossi_obc.h"
 
@@ -69,4 +69,4 @@ uint8_t obc_rtcInit(void);
 
 uint8_t obc_rtcTest(void);
 
-#endif /* OSSI_RTC_H_ */
+#endif /* OBC_RTC_H_ */

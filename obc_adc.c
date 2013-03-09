@@ -1,4 +1,4 @@
-#include "ossi_adc.h"
+#include "obc_adc.h"
 
 
 void adg708_portInit()

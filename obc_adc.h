@@ -1,5 +1,5 @@
-#ifndef OSSI_ADC_H_
-#define OSSI_ADC_H_
+#ifndef OBC_ADC_H_
+#define OBC_ADC_H_
 
 #include "ossi_obc.h"
 
@@ -18,4 +18,4 @@
 uint8_t obc_adcTest(void);
 
 
-#endif /* OSSI_ADC_H_ */
+#endif /* OBC_ADC_H_ */

@@ -5,8 +5,8 @@
  *      Author: donghee
  */
 
-#ifndef OSSI_EEPROM_H_
-#define OSSI_EEPROM_H_
+#ifndef OBC_EEPROM_H_
+#define OBC_EEPROM_H_
 
 #include "ossi_obc.h"
 
@@ -22,4 +22,4 @@ uint8_t eeprom_test(void);
 void eeprom_setAddress(uint8_t i2cAddress);
 
 
-#endif /* OSSI_EEPROM_H_ */
+#endif /* OBC_EEPROM_H_ */

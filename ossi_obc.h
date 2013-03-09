@@ -16,7 +16,7 @@
 #include "i2c.h"
 #include "adc12.h"
 #include "printf.h"
-#include "ossi_rtc.h"
+#include "obc_rtc.h"
 
 
 // PORT 1
