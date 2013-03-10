@@ -17,6 +17,10 @@
 #include "adc12.h"
 #include "printf.h"
 #include "obc_rtc.h"
+#include "obc_interface.h"
+#include "delay.h"
+#include "flash.h"
+
 
 
 // PORT 1

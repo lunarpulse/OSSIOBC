@@ -8,8 +8,6 @@
 #include "ossi_obc.h"
 
 
-
-
 uint8_t obc_sendData(uint8_t slaveAddress, uint8_t dataAddr, uint8_t size, uint8_t* data)
 {
 	#define MAX_SEND_DATA_SIZE	(16)
