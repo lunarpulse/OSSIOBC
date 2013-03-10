@@ -35,59 +35,56 @@ int main(void)
 	interface_init();
 	_EINT();
 
-	while(1)
-	{
-		interface_check();
-	}
-//	uint8_t bootTime[2];
-//	obc_mode = BOOT_MODE;
-//
-//    while ( obc_mode == BOOT_MODE)
-//    {
-//
-//    	volatile uint8_t i;
-//
-//		flash_readData(0,2,bootTime);
-//		uint16_t currentBootTime =  (bootTime[0] << 8) | bootTime[1];
-//
-//		// init the memory for the first time
-//		if(currentBootTime == 0xFFFF)
-//		{
-//			bootTime[0] = 0;
-//			bootTime[1] = 0;
-//			flash_writeBegin(FLASH_SMCLK,2);
-//			flash_writeData(0,2,bootTime);
-//			flash_writeEnd();
-//			currentBootTime = 0;
-//		}
-//
-//		if(currentBootTime  > BOOT_TIME)
-//		{
-//			P1OUT &= ~LED_PIN;
-//			obc_mode = DEPLOY_MODE;
-//			break;
-//		}
-//
-//    	// 10 seconds delay
-//    	for (i = 0; i < 10 ; i++)
-//    	{
-//    		// blink LED every second
-//    		P1OUT |= (LED_PIN + EXT_WDT_PIN);
-//    		delay_ms(500);
-//    		P1OUT &= ~(LED_PIN + EXT_WDT_PIN);
-//    		delay_ms(500);
-//    	}
-//
-//		currentBootTime += 1;
-//
-//		bootTime[0] = (currentBootTime >> 8) & 0xFF;
-//		bootTime[1] = currentBootTime & 0xFF;
-//		flash_writeBegin(FLASH_SMCLK,2);
-//		flash_writeData(0,2,bootTime);
-//		flash_writeEnd();
-//		_NOP(); // for debug purpose
-//    	interface_check();
-//    }
+
+	uint8_t bootTime[2];
+	obc_mode = BOOT_MODE;
+
+    while ( obc_mode == BOOT_MODE)
+    {
+
+    	volatile uint8_t i;
+
+		flash_readData(0,2,bootTime);
+		uint16_t currentBootTime =  (bootTime[0] << 8) | bootTime[1];
+
+		// init the memory for the first time
+		if(currentBootTime == 0xFFFF)
+		{
+			bootTime[0] = 0;
+			bootTime[1] = 0;
+			flash_writeBegin(FLASH_SMCLK,2);
+			flash_writeData(0,2,bootTime);
+			flash_writeEnd();
+			currentBootTime = 0;
+		}
+
+		if(currentBootTime  > BOOT_TIME)
+		{
+			P1OUT &= ~LED_PIN;
+			obc_mode = DEPLOY_MODE;
+			break;
+		}
+
+    	// 10 seconds delay
+    	for (i = 0; i < 10 ; i++)
+    	{
+    		// blink LED every second
+    		P1OUT |= (LED_PIN + EXT_WDT_PIN);
+    		delay_ms(500);
+    		P1OUT &= ~(LED_PIN + EXT_WDT_PIN);
+    		delay_ms(500);
+    	}
+
+		currentBootTime += 1;
+
+		bootTime[0] = (currentBootTime >> 8) & 0xFF;
+		bootTime[1] = currentBootTime & 0xFF;
+		flash_writeBegin(FLASH_SMCLK,2);
+		flash_writeData(0,2,bootTime);
+		flash_writeEnd();
+		_NOP(); // for debug purpose
+    	interface_check();
+    }
 
 
     while(1)
