@@ -222,15 +222,15 @@ void interface_check(void)
 			P4OUT ^= VEXT_OFF_PIN;
 		}
 
-		if (readChar == 'c')
-		{
-			P4OUT ^= ANT_DEPLOY2_PIN;
-		}
-
-		if (readChar == 'v')
-		{
-			P4OUT ^= ANT_DEPLOY1_PIN;
-		}
+//		if (readChar == 'c')
+//		{
+//			P4OUT ^= ANT_DEPLOY2_PIN;
+//		}
+//
+//		if (readChar == 'v')
+//		{
+//			P4OUT ^= ANT_DEPLOY1_PIN;
+//		}
 
 	}
 
