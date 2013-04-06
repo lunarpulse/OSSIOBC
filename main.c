@@ -18,12 +18,16 @@ int main(void)
     clock_setup();
     clock_dividerSetup(MCLK_DIVIDED_BY_1, SMCLK_DIVIDED_BY_1, ACLK_DIVIDED_BY_1);
 
+    // TODO: Init All IOs!!!!!!!
     P1OUT &= ~(LED_PIN + EXT_WDT_PIN);
     P1DIR |= (LED_PIN + EXT_WDT_PIN);
 
 	P4OUT &= ~(COMMS_OFF_PIN + BEACON_OFF_PIN + LED_OFF_PIN + SCOUT_EN_OUT_PIN + SCCHG_EN_OUT_PIN +ANT_DEPLOY2_PIN +ANT_DEPLOY1_PIN+VEXT_OFF_PIN );
 	P4DIR |= (COMMS_OFF_PIN + BEACON_OFF_PIN + LED_OFF_PIN + SCOUT_EN_OUT_PIN + SCCHG_EN_OUT_PIN +ANT_DEPLOY2_PIN +ANT_DEPLOY1_PIN+VEXT_OFF_PIN);
 
+	// adc mux port init
+	P5OUT &= ~(MUX_A0_PIN + MUX_A1_PIN + MUX_A2_PIN);
+	P5DIR |= MUX_A0_PIN + MUX_A1_PIN + MUX_A2_PIN;
 
 	P3OUT &= ~OBC_I2C_OFF_PIN;
 	P3DIR |= OBC_I2C_OFF_PIN;
@@ -31,8 +35,18 @@ int main(void)
 	P2OUT |= IO_OE_PIN;
 	P2DIR |= IO_OE_PIN;
 
+	// ADC
+	// ADC MUX
+	// default 0 / 0 / 0
+	// ADC12 setup
+	adc12_portSetup(ADC0_PIN + ADC1_PIN);
+	adc12_init(ADC12_CLOCKSOURCE_SMCLK, ADC12_CLOCKDIVIDER_8, ADC12_CYCLEHOLD_16_CYCLES);
+	adc12_setVolReference(ADC12_REF_VCC_VSS); 	// Vref = VCC
+
 	// init external interface
 	interface_init();
+
+
 	_EINT();
 
 	uint8_t bootTime[2];
@@ -84,6 +98,7 @@ int main(void)
 		_NOP(); // for debug purpose
     	interface_check(); // to take care of external interface while in BOOT_MODE
     }
+
 
 
     while(1)

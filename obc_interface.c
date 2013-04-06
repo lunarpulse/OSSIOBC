@@ -76,8 +76,77 @@ void interface_check(void)
 
 			// get battery voltage
 
+			// adc chan 0
+			volatile uint16_t adc_vsolar;
+			volatile uint16_t adc_vbus;
+			volatile uint16_t adc_vbat;
+			volatile uint16_t adc_vsupercap;
+
+			adg708_setChannel(MUX_VSOLAR);
+			adc_vsolar = adc12_readChannel(1) * 0.8056 * 2;
+
+			adg708_setChannel(MUX_VBUS);
+			adc_vbus = adc12_readChannel(1) * 0.8056 * 2;
+
+			adg708_setChannel(MUX_VBAT);
+			adc_vbat = adc12_readChannel(1) * 0.8056 * 2;
+
+			adg708_setChannel(MUX_VSUPERCAP);
+			adc_vsupercap = adc12_readChannel(1) * 0.8056 * 2;
+
+			// adc chan 1
+			volatile uint16_t adc_solar_cs1;
+			volatile uint16_t adc_solar_cs2;
+			volatile uint16_t adc_solar_cs3;
+			volatile uint16_t adc_solar_cs4;
+			volatile uint16_t adc_solar_cs5;
+			volatile uint16_t adc_bus_cs;
+			volatile uint16_t adc_batTemp;
+			volatile uint16_t adc_supercapTemp;
+
+			// VOUT = (GAIN)(RSENSE)(ILOAD)
+			// * 0.8056 / 2.5 = * 0.3222 for 0.05 RSENSE
+			// * 0.8056 / 0.5 = * 1.611 for 0.01 (10mOhm) RSENSE
+			adg708_setChannel(MUX_SOLAR_CS1);
+			adc_solar_cs1 = adc12_readChannel(0) * 0.3222;
+
+			adg708_setChannel(MUX_SOLAR_CS2);
+			adc_solar_cs2 = adc12_readChannel(0) * 0.3222;
+
+			adg708_setChannel(MUX_SOLAR_CS3);
+			adc_solar_cs3 = adc12_readChannel(0) * 0.3222;
+
+			adg708_setChannel(MUX_SOLAR_CS4);
+			adc_solar_cs4 = adc12_readChannel(0) * 0.3222;
+
+			adg708_setChannel(MUX_SOLAR_CS5);
+			adc_solar_cs5 = adc12_readChannel(0) * 0.3222;
+
+			adg708_setChannel(MUX_BUS_CS);
+			adc_bus_cs = adc12_readChannel(0) * 1.611;
+
+			// need to convert to celsius degree
+
+			adg708_setChannel(MUX_BAT_TEMP);
+			adc_batTemp = adc12_readChannel(0) * 0.8056;
+
+			adg708_setChannel(MUX_SUPERCAP_TEMP);
+			adc_supercapTemp = adc12_readChannel(0) * 0.8056;
+
 			begin_report();
 			printf("- Current Boot Time in Sec: %u sec\r\n",currentBootTime * 10);
+			printf("- Solar Voltage: %u mV\r\n", adc_vsolar);
+			printf("- Battery Voltage: %u mV\r\n", adc_vbat);
+			printf("- Bus Voltage: %u mV\r\n", adc_vbus);
+			printf("- Supercap Voltage: %u mV\r\n", adc_vsupercap);
+			printf("- Solar Panel 1 (-Z) Current: %u mA\r\n",adc_solar_cs1);
+			printf("- Solar Panel 2 (-Y) Current: %u mA\r\n",adc_solar_cs2);
+			printf("- Solar Panel 3 (-X) Current: %u mA\r\n",adc_solar_cs3);
+			printf("- Solar Panel 4 (+Z) Current: %u mA\r\n",adc_solar_cs4);
+			printf("- Solar Panel 5 (+Y) Current: %u mA\r\n",adc_solar_cs5);
+			printf("- Total Current Consumption: %u mA\r\n",adc_bus_cs);
+			printf("- Battery Temp: %u mV ? Celsius Degree\r\n",adc_batTemp);
+			printf("- Supercap Temp: %u mV ? Celsius Degree\r\n",adc_supercapTemp);
 			end_report();
 
 		}

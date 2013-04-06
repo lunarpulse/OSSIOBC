@@ -21,6 +21,7 @@
 #include "delay.h"
 #include "flash.h"
 #include "ossi_mux.h"
+#include "obc_adc.h"
 
 
 

@@ -16,9 +16,10 @@ void adg708_setChannel(uint8_t channel)
   a1 = ((channel-1)>>1) & 1;
   a2 = ((channel-1)>>2) & 1;
 
-  P5OUT &= ~MUX_A0_PIN;
-  P5OUT &= ~MUX_A1_PIN;
-  P5OUT &= ~MUX_A2_PIN;
+  P5OUT &= ~(MUX_A0_PIN + MUX_A1_PIN + MUX_A2_PIN);
+//  P5OUT &= ~MUX_A0_PIN;
+//  P5OUT &= ~MUX_A1_PIN;
+//  P5OUT &= ~MUX_A2_PIN;
 
   // RC equation
   // t = -log((V-Vc)/V)R*C (Unit: R is kOhm, C is microfarads, t is millisecs) Up to 97% V
@@ -28,7 +29,8 @@ void adg708_setChannel(uint8_t channel)
   // TODO: Change delay cycles depends on SYSTEM CLOCK
   // 0.0035sec * clock = cycles;
   // 0.0035 * 8000000(8Mhz) = 28000
-  __delay_cycles(28000);
+  //__delay_cycles(28000);
+  delay_ms(10);
 
   if (a0 == 1)
 	  P5OUT |= MUX_A0_PIN;
@@ -45,7 +47,8 @@ void adg708_setChannel(uint8_t channel)
   else
 	  P5OUT &= ~MUX_A2_PIN;
 
-  __delay_cycles(28000);
+  //__delay_cycles(28000);
+  delay_ms(10);
 }
 
 void adc_saveData1(viData_t* _viData, uint8_t muxCh, uint16_t value)
@@ -90,7 +93,7 @@ uint8_t obc_adcTest()
 	log_withNum(ADC_SERVICE, NOTICE_LEVEL, "adc vsolar: ", v.u8.vsolar);
 	__delay_cycles(1000000);
 
-	for (muxCh=MUX_SOLAR_CS4; muxCh <= MUX_SUN_IN ; muxCh++) {
+	for (muxCh=MUX_SOLAR_CS4; muxCh <= MUX_BUS_CS ; muxCh++) {
 		adg708_portInit();
 		adg708_setChannel(muxCh);
 		value =  adc12_readChannel(0);
