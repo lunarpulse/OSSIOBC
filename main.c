@@ -35,7 +35,6 @@ int main(void)
 	interface_init();
 	_EINT();
 
-
 	uint8_t bootTime[2];
 	obc_mode = BOOT_MODE;
 
@@ -83,28 +82,37 @@ int main(void)
 		flash_writeData(0,2,bootTime);
 		flash_writeEnd();
 		_NOP(); // for debug purpose
-    	interface_check();
+    	interface_check(); // to take care of external interface while in BOOT_MODE
     }
 
 
     while(1)
     {
+
     	switch (obc_mode)
     	{
     		case DEPLOY_MODE:
     			// deploy antenna
-
+    			P4OUT |= ANT_DEPLOY2_PIN;
+    			delay_sec(5);
+    			P4OUT |= ANT_DEPLOY1_PIN;
+    			delay_sec(5);
+    			P4OUT &= ~(ANT_DEPLOY2_PIN + ANT_DEPLOY1_PIN);
     			obc_mode = NORMAL_MODE;
     			break;
     		case NORMAL_MODE:
+    			// acquire data
     			// send i2c message to beacon
+    			// send and get i2c message to and from comms
+    			// send i2c message to LED
+    			// error handling
     			break;
     		default:
     			break;
     	}
-
+    	// when using LPM, let uart wake up the OBC!!!
+    	__bis_SR_register(LPM3_bits + GIE);
     	interface_check();
-
     }
 }
 

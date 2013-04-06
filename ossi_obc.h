@@ -20,6 +20,7 @@
 #include "obc_interface.h"
 #include "delay.h"
 #include "flash.h"
+#include "ossi_mux.h"
 
 
 

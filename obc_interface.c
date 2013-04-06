@@ -8,6 +8,29 @@
 
 #include "obc_interface.h"
 
+void begin_report(void)
+{
+	IE2 &= ~URXIE1;
+	P5OUT |= RS485_DE_PIN;
+	delay_ms(10);
+	printf("\r\n");
+	printf("******************************\r\n");
+	printf("[OSSI-1 Satellite Report Begin]\r\n");
+	printf("\r\n");
+}
+
+void end_report(void)
+{
+	printf("\r\n");
+	printf("[OSSI-1 Satellite Report End]\r\n");
+	printf("******************************\r\n");
+	printf("\r\n");
+	delay_ms(10);
+	P5OUT &= ~RS485_DE_PIN;
+	IE2 |= URXIE1;
+}
+
+
 void interface_init(void)
 {
 	// External Interface 485 TX DE
@@ -33,48 +56,29 @@ void interface_check(void)
 			flash_writeBegin(FLASH_SMCLK,2);
 			flash_writeData(0,2,resetBootTime);
 			flash_writeEnd();
-			P5OUT |= RS485_DE_PIN;
-			delay_ms(500);
+			begin_report();
 			printf("Boot Time Reset Completed\r\n");
-			delay_ms(500);
-			P5OUT &= ~RS485_DE_PIN;
-
+			end_report();
 		}
 
 		if(readChar == ' ')
 		{
 			// printout all the status
-			IE2 &= ~URXIE1;
-			P5OUT |= RS485_DE_PIN;
-			delay_sec(2);
 
-			puts("12345678999999999999999999999999999");
-			puts("123456789\r\n");
-			puts("123456789\r\n");
-			puts("123456789\r\n");
-			puts("123456789\r\n");
-			puts("123456789\r\n");
-			puts("123456789\r\n");
-			puts("123456789\r\n");
-			puts("123456789\r\n");
+			// get current boot time
+			uint8_t bootTime[2];
+			flash_readData(0,2,bootTime);
+			uint16_t currentBootTime =  (bootTime[0] << 8) | bootTime[1];
 
-			printf("Test1longlong2long3long4\r\n");
-			printf("Test2\r\n");
-			printf("Test3\r\n");
-			printf("Test4\r\n");
-			printf("Test5\r\n");
-			printf("Test6\r\n");
-			printf("Test7\r\n");
-			printf("Test8\r\n");
-			printf("Test9\r\n");
-			printf("Test10\r\n");
-			printf("Test11\r\n");
-			printf("Test12\r\n");
-			printf("Test13\r\n");
-			printf("Test14\r\n");
-			delay_sec(4);
-			P5OUT &= ~RS485_DE_PIN;
-			IE2 |= URXIE1;
+			// test i2c communication with modules
+
+			// get total current consumption
+
+			// get battery voltage
+
+			begin_report();
+			printf("- Current Boot Time in Sec: %u sec\r\n",currentBootTime * 10);
+			end_report();
 
 		}
 
@@ -151,9 +155,13 @@ void interface_check(void)
 
 		if (readChar == 'c')
 		{
-			P4OUT ^= LED_OFF_PIN;
+			P4OUT ^= ANT_DEPLOY2_PIN;
 		}
 
+		if (readChar == 'v')
+		{
+			P4OUT ^= ANT_DEPLOY1_PIN;
+		}
 
 	}
 
