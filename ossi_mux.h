@@ -12,6 +12,7 @@
 
 #define MUX_ADDRESS (0x70)
 
+
 typedef enum {
 	MUX_COMMS_CHANNEL = 0,
 	MUX_BEACON_CHANNEL = 1,
@@ -20,6 +21,7 @@ typedef enum {
 	MUX_OBC_INTERNAL_CHANNEL = 4
 } mux_chan_t;
 
-uint8_t mux_setChannel(uint8_t address, mux_chan_t channel);
+void mux_reset(void);
+uint8_t mux_setChannel(mux_chan_t channel);
 
 #endif /* OSSI_MUX_H_ */

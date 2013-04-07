@@ -10,6 +10,8 @@
 
 #include "ossi_obc.h"
 
+void interface_txEnable(void);
+void interface_txDisable(void);
 void interface_init(void);
 void interface_check(void);
 

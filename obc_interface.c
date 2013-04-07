@@ -8,11 +8,23 @@
 
 #include "obc_interface.h"
 
-void begin_report(void)
+void interface_txEnable(void)
 {
 	IE2 &= ~URXIE1;
 	P5OUT |= RS485_DE_PIN;
 	delay_ms(10);
+}
+
+void interface_txDisable(void)
+{
+	delay_ms(10);
+	P5OUT &= ~RS485_DE_PIN;
+	IE2 |= URXIE1;
+}
+
+void begin_report(void)
+{
+	interface_txEnable();
 	printf("\r\n");
 	printf("******************************\r\n");
 	printf("[OSSI-1 Satellite Report Begin]\r\n");
@@ -25,9 +37,7 @@ void end_report(void)
 	printf("[OSSI-1 Satellite Report End]\r\n");
 	printf("******************************\r\n");
 	printf("\r\n");
-	delay_ms(10);
-	P5OUT &= ~RS485_DE_PIN;
-	IE2 |= URXIE1;
+	interface_txDisable();
 }
 
 

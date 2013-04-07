@@ -29,8 +29,9 @@ int main(void)
 	P5OUT &= ~(MUX_A0_PIN + MUX_A1_PIN + MUX_A2_PIN);
 	P5DIR |= MUX_A0_PIN + MUX_A1_PIN + MUX_A2_PIN;
 
+	P3OUT |= I2C_RST_PIN; // default high
 	P3OUT &= ~OBC_I2C_OFF_PIN;
-	P3DIR |= OBC_I2C_OFF_PIN;
+	P3DIR |= (I2C_RST_PIN + OBC_I2C_OFF_PIN);
 
 	P2OUT |= IO_OE_PIN;
 	P2DIR |= IO_OE_PIN;
@@ -43,6 +44,11 @@ int main(void)
 	adc12_init(ADC12_CLOCKSOURCE_SMCLK, ADC12_CLOCKDIVIDER_8, ADC12_CYCLEHOLD_16_CYCLES);
 	adc12_setVolReference(ADC12_REF_VCC_VSS); 	// Vref = VCC
 
+	// I2C setup
+	i2c_portSetup();
+
+
+
 	// init external interface
 	interface_init();
 
@@ -51,6 +57,7 @@ int main(void)
 
 	uint8_t bootTime[2];
 	obc_mode = BOOT_MODE;
+	//obc_mode = NORMAL_MODE;
 
     while ( obc_mode == BOOT_MODE)
     {
@@ -118,6 +125,26 @@ int main(void)
     		case NORMAL_MODE:
     			// acquire data
     			// send i2c message to beacon
+
+    			mux_setChannel(MUX_BEACON_CHANNEL);
+    			obc_sendCmd(BEACON_ADDR,BEACON_CMD1_ADDR, MORSE_SEND_START);
+    			uint8_t rxdata[1];
+    			rxdata[0]= 0;
+    			i2c_masterRead(BEACON_ADDR,1,rxdata);
+    			if(rxdata[0] == BEACON_CMD1_CLEAR)
+    			{
+
+    				interface_txEnable();
+    				printf("oh yeah\r\n");
+    				interface_txDisable();
+    			}
+    			else
+    			{
+    				interface_txEnable();
+    				printf("not ok\r\n");
+    				interface_txDisable();
+    			}
+
     			// send and get i2c message to and from comms
     			// send i2c message to LED
     			// error handling

@@ -29,6 +29,16 @@ uint8_t obc_sendData(uint8_t slaveAddress, uint8_t dataAddr, uint8_t size, uint8
 	return SUCCESS;
 }
 
+//TODO
+//uint8_t obc_readData(uint8_t slaveAddress, uint8_t dataAddr, uint8_t size, uint8_t* data)
+//{
+//	volatile uint8_t result;
+//	result = i2c_masterRead(slaveAddress,size,data);
+//	if (result == ERROR){return ERROR;}
+//
+//	return SUCCESS;
+//}
+
 //void obc_sendDataToBeacon(void)
 //{
 //	obc_sendData(BEACON_ADDR, STATUS_DATA_ADDR, STATUS_DATA_SIZE, statusData.data);
