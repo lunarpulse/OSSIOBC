@@ -6,8 +6,14 @@
 /*
  * main.c
  */
-
-parmOperationMode obc_mode;
+volatile uint8_t sendCnt;
+volatile uint16_t wakeUpCnt;
+volatile uint8_t superCapChargeTime;
+volatile uint8_t ledOnTime;
+#define superCapChargePeriod (270) // 90 mins = 5400 sec = 270 *20(wakeup period)
+//#define superCapChargePeriod (2) // testing
+#define tipOffChargeTime	(15) // 5 mins
+#define ledOnTimeDuration (6) // 60 sec = 3 *20(wakeup period)
 
 int main(void)
 {
@@ -36,6 +42,10 @@ int main(void)
 	P2OUT |= IO_OE_PIN;
 	P2DIR |= IO_OE_PIN;
 
+
+	P1DIR &= ~(SC_PFO_IN_PIN + BAT_FAULT_IN_PIN + BAT_CHRG_IN_PIN + SC_ON_IN_PIN + BAT_ON_IN_PIN);
+	P2DIR &= ~(SOLAR_ON_IN_PIN + COMMS_FAULT_IN_PIN + BEACON_FAULT_IN_PIN + LED_FAULT_IN_PIN);
+
 	// ADC
 	// ADC MUX
 	// default 0 / 0 / 0
@@ -59,8 +69,12 @@ int main(void)
 	obc_mode = BOOT_MODE;
 	//obc_mode = NORMAL_MODE;
 
+	P4OUT |= (COMMS_OFF_PIN + LED_OFF_PIN);
+
     while ( obc_mode == BOOT_MODE)
     {
+
+
 
     	volatile uint8_t i;
 
@@ -84,6 +98,8 @@ int main(void)
 			obc_mode = DEPLOY_MODE;
 			break;
 		}
+		// All module turn off during boot mode
+		P4OUT |= (COMMS_OFF_PIN + BEACON_OFF_PIN + LED_OFF_PIN);
 
     	// 10 seconds delay
     	for (i = 0; i < 10 ; i++)
@@ -106,6 +122,12 @@ int main(void)
     	interface_check(); // to take care of external interface while in BOOT_MODE
     }
 
+    sendCnt = 0;
+    wakeUpCnt = 0;
+    systimer_init(TIMER_B_ACLK, TIMER_B_DIVIDED_BY_1, TIMER_B_UP_MODE, 33, 32763);
+    systimer_start();
+    superCapChargeTime = 0;
+    ledOnTime = 0;
 
 
     while(1)
@@ -120,40 +142,97 @@ int main(void)
     			P4OUT |= ANT_DEPLOY1_PIN;
     			delay_sec(5);
     			P4OUT &= ~(ANT_DEPLOY2_PIN + ANT_DEPLOY1_PIN);
+    			P4OUT &= ~(COMMS_OFF_PIN + BEACON_OFF_PIN);
     			obc_mode = NORMAL_MODE;
     			break;
     		case NORMAL_MODE:
     			// acquire data
     			// send i2c message to beacon
-
+    			wakeUpCnt++;
+    			obc_dataAcquire();
     			mux_setChannel(MUX_BEACON_CHANNEL);
-    			obc_sendCmd(BEACON_ADDR,BEACON_CMD1_ADDR, MORSE_SEND_START);
-    			uint8_t rxdata[1];
-    			rxdata[0]= 0;
-    			i2c_masterRead(BEACON_ADDR,1,rxdata);
-    			if(rxdata[0] == BEACON_CMD1_CLEAR)
+    			obc_sendDataToBeacon();
+    			sendCnt++;
+    			if (sendCnt  > 11)
+    			{
+    				sendCnt = 0;
+					obc_sendCmd(BEACON_ADDR,BEACON_CMD1_ADDR, MORSE_SEND_START);
+					interface_txEnable();
+					printf("OBC commanded Beacon\r\n");
+					interface_txDisable();
+					uint8_t rxdata[1];
+					rxdata[0]= 0;
+					i2c_masterRead(BEACON_ADDR,1,rxdata);
+
+					if(rxdata[0] == BEACON_CMD1_CLEAR || rxdata[0] == SENDING || rxdata[0] == SENT)
+					{
+
+						interface_txEnable();
+						printf("BEACON FINE\r\n");
+						interface_txDisable();
+					}
+					else if(rxdata[0] == BEACON_STANDALONE)
+
+					{
+						interface_txEnable();
+						printf("BEACON STANDALONE\r\n");
+						interface_txDisable();
+					}
+					else
+					{
+						interface_txEnable();
+						printf("NOT OK\r\n");
+						interface_txDisable();
+					}
+    			}
+
+    			if (wakeUpCnt >= superCapChargePeriod)
     			{
 
+    				obc_supercapCharge();
+    				// if supercap v is >= 3.8V
+    				// wait 20 secs more and LED ON
+    				volatile uint16_t adc_vsupercap;
+    				adg708_setChannel(MUX_VSUPERCAP);
+    				adc_vsupercap = adc12_readChannel(1) * 0.8056 * 2;
+
     				interface_txEnable();
-    				printf("oh yeah\r\n");
-    				interface_txDisable();
+					printf("SuperCap Charging ...... \r\n");
+					printf("Wake Up Count: %u\r\n", wakeUpCnt);
+					printf("Super Cap Voltage: %u mV\r\n", adc_vsupercap);
+					interface_txDisable();
+
+    				if ( adc_vsupercap >= 3500)
+    				{
+    					if ( wakeUpCnt >= superCapChargePeriod + tipOffChargeTime)
+    					{
+    						obc_ledOn();
+    					}
+    				}
+
+    				if ( wakeUpCnt >= superCapChargePeriod + tipOffChargeTime +ledOnTimeDuration)
+    				{
+    					wakeUpCnt = 0;
+    					obc_ledOff();
+    				}
+
     			}
     			else
     			{
-    				interface_txEnable();
-    				printf("not ok\r\n");
-    				interface_txDisable();
+    				obc_ledOff();
     			}
 
-    			// send and get i2c message to and from comms
-    			// send i2c message to LED
-    			// error handling
     			break;
     		default:
     			break;
     	}
     	// when using LPM, let uart wake up the OBC!!!
+		systimer_setWakeUpPeriod(20); // wake up every 20sec
+		systimer_startWakeUpPeriod();
     	__bis_SR_register(LPM3_bits + GIE);
+    	P1OUT |= (LED_PIN + EXT_WDT_PIN);
+    	delay_ms(10);
+    	P1OUT &= ~(LED_PIN + EXT_WDT_PIN);
     	interface_check();
     }
 }

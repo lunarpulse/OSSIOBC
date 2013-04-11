@@ -149,15 +149,18 @@ void interface_check(void)
 			printf("- Battery Voltage: %u mV\r\n", adc_vbat);
 			printf("- Bus Voltage: %u mV\r\n", adc_vbus);
 			printf("- Supercap Voltage: %u mV\r\n", adc_vsupercap);
-			printf("- Solar Panel 1 (-Z) Current: %u mA\r\n",adc_solar_cs1);
+			printf("- Solar Panel 1 (+Y) Current: %u mA\r\n",adc_solar_cs1);
 			printf("- Solar Panel 2 (-Y) Current: %u mA\r\n",adc_solar_cs2);
-			printf("- Solar Panel 3 (-X) Current: %u mA\r\n",adc_solar_cs3);
-			printf("- Solar Panel 4 (+Z) Current: %u mA\r\n",adc_solar_cs4);
-			printf("- Solar Panel 5 (+Y) Current: %u mA\r\n",adc_solar_cs5);
+			printf("- Solar Panel 3 (+Z) Current: %u mA\r\n",adc_solar_cs3);
+			printf("- Solar Panel 4 (-Z) Current: %u mA\r\n",adc_solar_cs4);
+			printf("- Solar Panel 5 (-X) Current: %u mA\r\n",adc_solar_cs5);
 			printf("- Total Current Consumption: %u mA\r\n",adc_bus_cs);
 			printf("- Battery Temp: %u mV ? Celsius Degree\r\n",adc_batTemp);
 			printf("- Supercap Temp: %u mV ? Celsius Degree\r\n",adc_supercapTemp);
 			end_report();
+
+			obc_dataAcquire();
+			obc_reportSendDataToBeacon();
 
 		}
 
@@ -193,6 +196,7 @@ void interface_check(void)
 		}
 
 
+
 		if (readChar=='d')
 		{
 
@@ -200,6 +204,18 @@ void interface_check(void)
 			P4OUT ^= SCCHG_EN_OUT_PIN;
 
 
+		}
+
+		if(readChar =='l')
+		{
+			P4OUT ^= LED_OFF_PIN;
+			volatile uint16_t adc_vsupercap;
+			adg708_setChannel(MUX_VSUPERCAP);
+			adc_vsupercap = adc12_readChannel(1) * 0.8056 * 2;
+
+			interface_txEnable();
+			printf("Super Cap Voltage: %u mV\r\n", adc_vsupercap);
+			interface_txDisable();
 		}
 
 		if(readChar =='q')

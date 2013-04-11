@@ -23,7 +23,7 @@
 #include "ossi_mux.h"
 #include "obc_adc.h"
 
-
+extern parmOperationMode obc_mode;
 
 // PORT 1
 #define EXT_WDT_PIN			(BIT0) // external wdt reset pin
@@ -88,5 +88,13 @@
 
 uint8_t obc_sendData(uint8_t slaveAddress, uint8_t dataAddr, uint8_t size, uint8_t* data);
 uint8_t obc_sendCmd(uint8_t slaveAddress, uint8_t cmdAddr, uint8_t cmd);
+void obc_dataAcquire(void);
+void obc_sendDataToBeacon(void);
+void obc_dataAcquire(void);
+void obc_reportSendDataToBeacon(void);
+
+void obc_supercapCharge(void);
+void obc_ledOn(void);
+void obc_ledOff(void);
 
 #endif /* OSSIOBC_H_ */

@@ -12,6 +12,8 @@
 
 void interface_txEnable(void);
 void interface_txDisable(void);
+void begin_report(void);
+void end_report(void);
 void interface_init(void);
 void interface_check(void);
 

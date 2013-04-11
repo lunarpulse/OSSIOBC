@@ -30,7 +30,7 @@ void adg708_setChannel(uint8_t channel)
   // 0.0035sec * clock = cycles;
   // 0.0035 * 8000000(8Mhz) = 28000
   //__delay_cycles(28000);
-  delay_ms(10);
+  delay_ms(20);
 
   if (a0 == 1)
 	  P5OUT |= MUX_A0_PIN;
@@ -48,7 +48,7 @@ void adg708_setChannel(uint8_t channel)
 	  P5OUT &= ~MUX_A2_PIN;
 
   //__delay_cycles(28000);
-  delay_ms(10);
+  delay_ms(20);
 }
 
 void adc_saveData1(viData_t* _viData, uint8_t muxCh, uint16_t value)
